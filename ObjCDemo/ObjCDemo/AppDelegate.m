@@ -19,9 +19,21 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     GLMapLogMask = /* VERBOSE_FLAG |*/ ERROR_FLAG | FATAL_FLAG;
     
+    NSString *filename = @"852";
+    NSString *extension = @"Model";
+    NSString *modelPath = [[NSBundle mainBundle] pathForResource:filename
+                                                          ofType:extension];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *directory = [paths objectAtIndex:0];
+    NSString *filePath = [directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", filename, extension]];
+    
+    NSError *copyError;
+    [[NSFileManager defaultManager] copyItemAtPath:modelPath
+                                            toPath:filePath
+                                             error:&copyError];
+    
 #   warning replace <apikey> with your apikey from http://getyourmap.com/account/
     [GLMapManager sharedManager].apiKey = @"<apikey>";
-
     return YES;
 }
 
